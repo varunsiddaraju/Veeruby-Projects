@@ -141,7 +141,7 @@ public class MapInteractionHandler : MonoBehaviour, IMixedRealityPointerHandler,
 
             // Now we can raycast an imaginary plane orignating from the updated _startingPointInLocalSpace.
             var rayPositionInMapLocalSpace = _mapRenderer.transform.InverseTransformPoint(_panningPointer.Position);
-            var rayDirectionInMapLocalSpace =_mapRenderer.transform.InverseTransformDirection(_panningPointer.Rotation * Vector3.forward).normalized;
+            var rayDirectionInMapLocalSpace = _mapRenderer.transform.InverseTransformDirection(_panningPointer.Rotation * Vector3.forward).normalized;
             var rayInMapLocalSpace = new Ray(rayPositionInMapLocalSpace, rayDirectionInMapLocalSpace.normalized);
             var hitPlaneInMapLocalSpace = new Plane(Vector3.up, _startingPointInLocalSpace);
             if (hitPlaneInMapLocalSpace.Raycast(rayInMapLocalSpace, out float enter))
@@ -169,10 +169,19 @@ public class MapInteractionHandler : MonoBehaviour, IMixedRealityPointerHandler,
             }
 
             // Apply pan translation.
-         
-            if (photonView1.IsMine)
+            var deltaInLocalSpace = _currentPointInLocalSpace - _startingPointInLocalSpace;
+            var deltaInMercatorSpace = MapRendererTransformExtensions.TransformLocalDirectionToMercator(deltaInLocalSpace, zoomLevelToUseForInteraction);
+            var newCenterInMercator = _startingMapCenterInMercator - deltaInMercatorSpace;
+            newCenterInMercator.Y = Math.Max(Math.Min(0.5, newCenterInMercator.Y), -0.5);
+            Debug.Log(newCenterInMercator);
+
+            //_mapRenderer.Center = new LatLon(newCenterInMercator.X, newCenterInMercator.Y);
+            // _mapRenderer.Center = new LatLon(newCenterInMercator_X, newCenterInMercator_Y);
+
+
+            if (photonView1 != null && photonView1.IsMine)
             {
-                photonView1.RPC("RPC_MoveMap", RpcTarget.All, zoomLevelToUseForInteraction);
+                photonView1.RPC("RPC_MoveMap", RpcTarget.All, newCenterInMercator.X, newCenterInMercator.Y);
             }
 
         }
@@ -194,14 +203,14 @@ public class MapInteractionHandler : MonoBehaviour, IMixedRealityPointerHandler,
     }
 
     [PunRPC]
-    private void RPC_MoveMap(float zoomLevelToUseForInteraction)
+    private void RPC_MoveMap(double newCenterInMercator_X, double newCenterInMercator_Y)
     {
-        Debug.Log(photonView1.OwnerActorNr + ": zoomLevelToUseForInteraction: " + zoomLevelToUseForInteraction);
-        var deltaInLocalSpace = _currentPointInLocalSpace - _startingPointInLocalSpace;
-        var deltaInMercatorSpace = MapRendererTransformExtensions.TransformLocalDirectionToMercator(deltaInLocalSpace, zoomLevelToUseForInteraction);
-        var newCenterInMercator = _startingMapCenterInMercator - deltaInMercatorSpace;
-        newCenterInMercator.Y = Math.Max(Math.Min(0.5, newCenterInMercator.Y), -0.5);
+        Debug.Log(photonView1.OwnerActorNr + ": newCenterInMercator: " + newCenterInMercator_X + ":" + newCenterInMercator_Y);
 
-        _mapRenderer.Center = new LatLon(newCenterInMercator);
+
+
+        Vector2D m_newCenterInMercator = new Vector2D(newCenterInMercator_X, newCenterInMercator_Y);
+
+        _mapRenderer.Center = new LatLon(m_newCenterInMercator);
     }
 }
