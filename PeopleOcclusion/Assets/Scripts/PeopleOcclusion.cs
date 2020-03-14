@@ -86,8 +86,13 @@ public class PeopleOcclusion : MonoBehaviour
                 m_material.SetInt("_ONWIDE", 0);
             }
 
+<<<<<<< Updated upstream
             m_material.SetTexture("_OcclusionDepth", m_humanBodyManager.humanDepthTexture);
             m_material.SetTexture("_OcclusionStencil", m_humanBodyManager.humanStencilTexture);
+=======
+          //  m_material.SetTexture("_OcclusionDepth", m_humanBodyManager.humanDepthTexture);
+          //  m_material.SetTexture("_OcclusionStencil", m_humanBodyManager.humanStencilTexture);
+>>>>>>> Stashed changes
             Graphics.Blit(source, destination, m_material);
         }
         else
@@ -106,7 +111,12 @@ public class PeopleOcclusion : MonoBehaviour
 
     private bool PeopleOcclusionSupported()
     {
+<<<<<<< Updated upstream
         return m_humanBodyManager.subsystem != null && m_humanBodyManager.humanDepthTexture != null && m_humanBodyManager.humanStencilTexture != null;
+=======
+        return true;
+        //m_humanBodyManager.subsystem != null && m_humanBodyManager.humanDepthTexture != null && m_humanBodyManager.humanStencilTexture != null;
+>>>>>>> Stashed changes
     }
 
     private void RefreshCameraFeedTexture()
