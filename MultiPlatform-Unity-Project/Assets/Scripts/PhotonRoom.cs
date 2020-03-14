@@ -28,7 +28,7 @@ public class PhotonRoom : MonoBehaviourPunCallbacks, IInRoomCallbacks
     private GameObject table;
     private GameObject module;
 
-    private string prefabName = "Rocket Launcher_Complete Variant";
+    public string prefabName = "Rocket Launcher_Complete Variant";
     private Vector3 moduleLocation = Vector3.zero;
 
     void Awake()
