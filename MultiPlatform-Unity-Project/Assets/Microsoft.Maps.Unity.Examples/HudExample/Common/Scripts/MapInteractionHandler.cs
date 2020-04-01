@@ -173,7 +173,12 @@ public class MapInteractionHandler : MonoBehaviour, IMixedRealityPointerHandler,
             var deltaInMercatorSpace = MapRendererTransformExtensions.TransformLocalDirectionToMercator(deltaInLocalSpace, zoomLevelToUseForInteraction);
             var newCenterInMercator = _startingMapCenterInMercator - deltaInMercatorSpace;
             newCenterInMercator.Y = Math.Max(Math.Min(0.5, newCenterInMercator.Y), -0.5);
-       
+            Debug.Log(newCenterInMercator);
+
+            //_mapRenderer.Center = new LatLon(newCenterInMercator.X, newCenterInMercator.Y);
+            // _mapRenderer.Center = new LatLon(newCenterInMercator_X, newCenterInMercator_Y);
+
+
             if (photonView1 != null && photonView1.IsMine)
             {
                 photonView1.RPC("RPC_MoveMap", RpcTarget.All, newCenterInMercator.X, newCenterInMercator.Y);
@@ -201,6 +206,8 @@ public class MapInteractionHandler : MonoBehaviour, IMixedRealityPointerHandler,
     private void RPC_MoveMap(double newCenterInMercator_X, double newCenterInMercator_Y)
     {
         Debug.Log(photonView1.OwnerActorNr + ": newCenterInMercator: " + newCenterInMercator_X + ":" + newCenterInMercator_Y);
+
+
 
         Vector2D m_newCenterInMercator = new Vector2D(newCenterInMercator_X, newCenterInMercator_Y);
 
