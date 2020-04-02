@@ -17,10 +17,11 @@ public class SearchLocation : MonoBehaviour//, IPunObservable
     string place;
     float prevValue;
     public TextMeshPro inputText;
-    // string prevText;
+    public TextMeshPro previewText;
+   
     public MapRenderer mapRenderer;
     public PinchSlider pinchSlider;
-    public TextMeshPro debugText;
+    
     public TouchScreenKeyboard keyboard;
     private PhotonView photonView1;
     OwnershipHandler ownershipHandler;
@@ -35,15 +36,11 @@ public class SearchLocation : MonoBehaviour//, IPunObservable
         Debug.Log(inputText.text);
         place = inputText.text;
 
-        //Task downloading = StartAsync();
-
     }
     async System.Threading.Tasks.Task StartAsync()
     {
 
         MapServices.BingMapsKey = "AqwIuNYzCpGUpxAGoxrEezGT2qFqWz8u913J38duA4W7SHz4DXogJ6wHwJPShBEP";
-
-        //inputtext = GetComponentInChildren<SystemKeyboardExample>().
 
         if (string.IsNullOrEmpty(MapServices.BingMapsKey))
         {
@@ -66,26 +63,8 @@ public class SearchLocation : MonoBehaviour//, IPunObservable
 
         }
 
-        //Debug.Log(a.Locations) ;
-        //Debug.Log(a.Locations.Count);
-        //Debug.Log(a.Locations.ToString());
-        //Debug.Log(a.Status);
-        //Debug.Log(finderResult.Status);
-        //Debug.Log(formattedAddressString);
-
         mapRenderer = GetComponent<MapRenderer>();
         StartCoroutine(RunTour(latlong));
-
-        //MapScene mapScene = GetComponent<MapScene>() ;
-        //mapScene = new MapSceneOfLocationAndZoomLevel(latlong, 15f);
-        //mapRenderer.SetMapScene(mapScene); 
-
-        //   double latitude = _mapRenderer.GetComponent<LatLonWrapper>().Latitude;
-
-        //latitude = latlong.LatitudeInDegrees;
-        //   _mapRenderer.GetComponent<LatLonWrapper>().Longitude = latlong.LongitudeInDegrees;
-        //MapSceneOfLocationAndZoomLevel(new LatLon(47.608699, -122.340571), 15f);
-        //_mapRenderer.SetMapScene();
 
     }
 
@@ -93,10 +72,7 @@ public class SearchLocation : MonoBehaviour//, IPunObservable
     void Update()
     {
 
-        if (debugText.text == "Photon view ID:")
-        {
-            debugText.text = "Photon view ID: " + photonView1.ViewID;
-        }
+        previewText.text = inputText.text;
 
         if (inputText.text != null && inputText.text != place && pinchSlider.SliderValue == prevValue)
         {
@@ -107,7 +83,6 @@ public class SearchLocation : MonoBehaviour//, IPunObservable
         }
         if (pinchSlider.GetComponent<PinchSlider>().enabled == true)
         {
-            // mapRenderer.ZoomLevel = pinchSlider.SliderValue * 30;
             prevValue = pinchSlider.SliderValue;
         }    }
 
@@ -152,9 +127,5 @@ public class SearchLocation : MonoBehaviour//, IPunObservable
         mapRenderer.ZoomLevel = sliderValue * 30;
     }
 
-    //public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    //{
-    //    throw new System.NotImplementedException();
-    //}
 }
 
