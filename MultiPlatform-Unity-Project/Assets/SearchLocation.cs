@@ -33,7 +33,8 @@ public class SearchLocation : MonoBehaviour//, IPunObservable
     {
         ownershipHandler = GetComponent<OwnershipHandler>();
         photonView1 = gameObject.GetComponent<PhotonView>();
-        Debug.Log(inputText.text);
+
+   
         place = inputText.text;
 
     }
@@ -71,8 +72,8 @@ public class SearchLocation : MonoBehaviour//, IPunObservable
     // Update is called once per fram
     void Update()
     {
-
-        previewText.text = inputText.text;
+  
+        previewText.text = inputText.text.Substring(8, inputText.text.Length - 8);
 
         if (inputText.text != null && inputText.text != place && pinchSlider.SliderValue == prevValue)
         {
