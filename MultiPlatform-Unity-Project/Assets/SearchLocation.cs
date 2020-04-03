@@ -60,7 +60,6 @@ public class SearchLocation : MonoBehaviour//, IPunObservable
         {
             formattedAddressString = finderResult.Locations[0].Address.FormattedAddress;
             latlong = finderResult.Locations[0].Point;
-            Debug.Log(latlong);
 
         }
 
@@ -72,8 +71,11 @@ public class SearchLocation : MonoBehaviour//, IPunObservable
     // Update is called once per fram
     void Update()
     {
-  
-        previewText.text = inputText.text.Substring(8, inputText.text.Length - 8);
+
+        if (inputText.text.Length>8) 
+        {
+            previewText.text = inputText.text.Substring(8, inputText.text.Length - 8);
+        }
 
         if (inputText.text != null && inputText.text != place && pinchSlider.SliderValue == prevValue)
         {
