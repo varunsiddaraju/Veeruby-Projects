@@ -72,10 +72,10 @@ public class SearchLocation : MonoBehaviour//, IPunObservable
     void Update()
     {
 
-        if (inputText.text.Length>8) 
-        {
-            previewText.text = inputText.text.Substring(8, inputText.text.Length - 8);
-        }
+        //if (inputText.text.Length>8) 
+        //{
+        //    previewText.text = inputText.text.Substring(8, inputText.text.Length - 8);
+        //}
 
         if (inputText.text != null && inputText.text != "Open keyboard to type text." && inputText.text != place && pinchSlider.SliderValue == prevValue)
         {
